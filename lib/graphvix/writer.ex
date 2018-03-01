@@ -1,6 +1,5 @@
 defmodule Graphvix.Writer do
   @moduledoc false
-  @output_path Application.get_env(:graphvix, :output_path, "")
 
   def write(%{nodes: nodes, edges: edges, clusters: clusters, attrs: attrs}) do
     contents = [
@@ -81,8 +80,9 @@ defmodule Graphvix.Writer do
   end
 
   defp get_output_path do
-    case @output_path do
-      "" -> ""
+    path = Application.get_env(:graphvix, :output_path, nil)
+    case path do
+      nil -> ""
       path ->
         File.mkdir_p!(path)
         path
