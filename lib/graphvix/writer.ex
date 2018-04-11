@@ -102,6 +102,7 @@ defmodule Graphvix.Writer do
 
   defp attributes_to_dot_format(attrs) do
     attrs
+    |> Enum.map(&escape_attrs_quotes/1)
     |> Enum.map(&pair_to_dot_format/1)
     |> Enum.join(",")
   end
@@ -115,5 +116,9 @@ defmodule Graphvix.Writer do
 
   defp pair_to_dot_format({k, v}) do
     ~s/#{k}="#{v}"/
+  end
+
+  defp escape_attrs_quotes({k, v}) do
+    {k, String.replace(v, "\"", "\\\"")}
   end
 end
